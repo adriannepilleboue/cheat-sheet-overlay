@@ -1,0 +1,87 @@
+/* Common */
+.cso-title {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.cso-subtitle {
+    font-weight: bold;
+}
+
+/* CSOOverlayWidget */
+.cso-overlay {
+    margin: 1.0em;
+    padding: 1.0em;
+    spacing: 1.0em;
+}
+
+.cso-overlay-title-hbox {
+    spacing: 1.0em;
+}
+
+/* CSOShortcutDialog */
+.cso-shortcut-dialog {
+    width: 20em;
+}
+.cso-shortcut-dialog-vbox {
+    spacing: 1.0em;
+}
+.cso-shortcut-dialog-delete-button {
+    background-color: #5d4446;
+    color: #fc918a;
+}
+
+/* CSOShortcutsSheetWidget */
+.cso-shortcuts-sheet-vbox {
+    spacing: 0.0em;
+}
+
+.cso-shortcuts-sheet-button {
+    padding: 0.5em;
+}
+.cso-shortcuts-sheet-button:hover {
+    background-color: #515155;
+    border-radius: 0.5em;
+}
+.cso-shortcuts-sheet-hbox {
+    spacing: 3.0em;
+}
+
+.cso-shortcuts-sheet-name {
+    color: #AAAAAA;
+}
+
+/* CSOShortcutWidget */
+.cso-shortcut-hbox {
+    spacing: 0.5em;
+}
+
+.cso-shortcut-key {
+    font-weight: 600;
+    font-family: monospace;
+    font-size: 1em;
+    color: #2b2b2b;
+    background-color: #f7f7f7;
+    border: 1px solid #c9c9c9;
+    border-bottom: 2px solid #b0b0b0;
+    border-radius: 4px;
+    padding: 0.15em 0.5em;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* CSOIconButtonWidget */
+.cso-icon-button {
+    padding: 0.8em;
+    border-radius: 100.0em;  /* Too big value = circle */
+    background-color: #48484b;
+    margin: 0.15em;
+}
+.cso-icon-button:hover {
+    background-color: #515155;
+}
+.cso-icon-button:focus {
+    background-color: #515155;
+    border-color: -st-accent-fg-color;
+    border-width: 0.15em;
+    margin: 0.0em;
+}

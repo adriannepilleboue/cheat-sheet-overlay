@@ -1,0 +1,65 @@
+# French translations for PACKAGE package
+# Traductions françaises du paquet PACKAGE.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#  <adrianne.pilleboue@gmail.com>, 2026.
+# Adrianne <adrianne.pilleboue@gmail.com>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-22 16:52+0200\n"
+"PO-Revision-Date: 2026-08-22 18:48+0200\n"
+"Last-Translator: Adrianne <adrianne.pilleboue@gmail.com>\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Gtranslator 50.0\n"
+
+#: src/extension.js:55
+msgid "System"
+msgstr "Système"
+
+#: src/prefs.js:28
+msgid "Select a shortcut"
+msgstr "Choisir un raccourci"
+
+#: src/prefs.js:44
+msgid "Define new shortcut"
+msgstr "Définir un nouveau raccourci"
+
+#: src/components/overlay-widget.js:77
+msgid "Shortcuts"
+msgstr "Raccourcis"
+
+#: src/components/shortcut-dialog.js:54
+msgid "Edit pinned shortcut"
+msgstr "Éditer le raccourci épinglé"
+
+#: src/components/shortcut-dialog.js:54
+msgid "Pin new shortcut"
+msgstr "Épingler un nouveau raccourci"
+
+#: src/components/shortcut-dialog.js:62
+msgid "Description"
+msgstr "Description"
+
+#: src/components/shortcut-dialog.js:75
+msgid "Shortcut (keys separated by spaces)"
+msgstr "Raccourci (touches séparées par des espaces) "
+
+#: src/components/shortcut-dialog.js:88
+msgid "Cancel"
+msgstr "Annuler"
+
+#: src/components/shortcut-dialog.js:96
+msgid "Delete"
+msgstr "Supprimer"
+
+#: src/components/shortcut-dialog.js:106
+msgid "Save"
+msgstr "Enregistrer"

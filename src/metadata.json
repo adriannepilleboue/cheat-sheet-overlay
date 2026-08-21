@@ -1,0 +1,11 @@
+{
+  "name": "Cheat Sheet Overlay",
+  "description": "Display a cheat sheet overlay with a per-application list of shortcuts",
+  "uuid": "cheat.sheet@overlay.org",
+  "settings-schema": "org.gnome.shell.extensions.cheatsheetoverlay",
+  "gettext-domain": "cheat.sheet@overlay.org",
+  "url": "https://github.com/adriannepilleboue/cheat-sheet-overlay",
+  "shell-version": [
+    "50"
+  ]
+}

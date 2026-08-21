@@ -1,0 +1,33 @@
+{
+    "name": "shortcuts-gnome-extension",
+    "version": "1.0.0",
+    "description": "Display a cheat sheet overlay with a per-application list of shortcuts",
+    "main": "extension.js",
+    "scripts": {
+        "lint": "eslint src/**/*.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "gnome",
+        "extension",
+        "shortcuts"
+    ],
+    "author": "Adrianne PILLEBOUE",
+    "license": "GPL-3.0",
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "eslint": "^10.6.0"
+    },
+    "eslintConfig": {
+        "env": {
+            "es2021": true,
+            "node": true
+        },
+        "extends": "eslint:recommended",
+        "parserOptions": {
+            "ecmaVersion": 2022,
+            "sourceType": "module"
+        }
+    },
+    "type": "module"
+}
