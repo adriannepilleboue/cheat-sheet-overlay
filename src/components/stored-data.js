@@ -40,30 +40,30 @@ export const CSOStoredData = GObject.registerClass(
             if (!dir.query_exists(null)) {
                 try {
                     dir.make_directory_with_parents(null);
-                    console.log(`Created user directory: ${configDirPath}`);
+                    this._logger.log(`Created user directory: ${configDirPath}`);
                 } catch (e) {
-                    console.error(`Failed to create directory ${configDirPath}: ${e}`);
+                    this._logger.error(`Failed to create directory ${configDirPath}: ${e}`);
                 }
             }
             return configDirPath;
         }
 
-        _loadOneSheet(filePath, appId) {
-            try {
-                const [success, contents] = GLib.file_get_contents(filePath);
-                if (success) {
-                    const text = new TextDecoder('utf-8').decode(contents);
-                    const parsed = JSON.parse(text);
+        async _loadOneSheet(filePath, appId) {
+            const file = Gio.File.new_for_path(filePath);
 
-                    const appShortcuts = parsed.shortcuts;
-                    this._appShortcuts[appId] = appShortcuts;
-                }
+            try {
+                const [contents] = await file.load_contents_async(null);
+                const text = new TextDecoder('utf-8').decode(contents);
+                const parsed = JSON.parse(text);
+
+                const appShortcuts = parsed.shortcuts;
+                this._appShortcuts[appId] = appShortcuts;
             } catch (err) {
-                console.error(`Failed to parse cheat sheet file ${filePath}: ${err}`);
+                this._logger.error(`Failed to parse cheat sheet file ${filePath}: ${err}`);
             }
         }
 
-        _loadAllSheets() {
+        async loadAllSheets() {
             const cheatSheetsDir = this._ensureAndGetUserConfigDir();
 
             const dir = Gio.File.new_for_path(cheatSheetsDir);
@@ -75,19 +75,20 @@ export const CSOStoredData = GObject.registerClass(
                     null
                 );
 
+                const promises = [];
                 let info;
                 while ((info = enumerator.next_file(null)) !== null) {
                     const name = info.get_name();
-                    // Filter files ending with your target extension
                     if (info.get_file_type() === Gio.FileType.REGULAR && name.endsWith(extension)) {
                         const filePath = GLib.build_filenamev([cheatSheetsDir, name]);
                         const appId = name.slice(0, -extension.length);
-                        this._loadOneSheet(filePath, appId);
+                        promises.push(this._loadOneSheet(filePath, appId));
                     }
                 }
+                await Promise.all(promises);
                 enumerator.close(null);
             } catch (e) {
-                console.error(`Failed to load ${dir}: ${e}`);
+                this._logger.error(`Failed to load ${dir}: ${e}`);
             }
 
             this.emit('data-updated');
@@ -104,16 +105,15 @@ export const CSOStoredData = GObject.registerClass(
                 const jsonString = JSON.stringify(dataToSave, null, 4);
                 GLib.file_set_contents(filePath, jsonString);
             } catch (err) {
-                console.error(`Failed to save cheat sheet file ${filePath}: ${err}`);
+                this._logger.error(`Failed to save cheat sheet file ${filePath}: ${err}`);
             }
         }
 
-        constructor() {
+        constructor(logger) {
             super();
 
             this._appShortcuts = {};
-
-            this._loadAllSheets();
+            this._logger = logger;
         }
 
         getAppShortcuts(appId) {
@@ -139,7 +139,7 @@ export const CSOStoredData = GObject.registerClass(
 
         editShortcut(appId, oldName, oldShortcut, newName, newShortcut) {
             if (!this._appShortcuts[appId]) {
-                console.error(`No shortcuts found for appId: ${appId}`);
+                this._logger.error(`No shortcuts found for appId: ${appId}`);
                 return;
             }
 
@@ -159,13 +159,13 @@ export const CSOStoredData = GObject.registerClass(
 
                 this.emit('data-updated');
             } else {
-                console.error(`Shortcut entry not found for appId: ${appId}, name: ${oldName}, shortcut: ${oldShortcut.join(' ')}`);
+                this._logger.error(`Shortcut entry not found for appId: ${appId}, name: ${oldName}, shortcut: ${oldShortcut.join(' ')}`);
             }
         }
 
         deleteShortcut(appId, name, shortcut) {
             if (!this._appShortcuts[appId]) {
-                console.error(`No shortcuts found for appId: ${appId}`);
+                this._logger.error(`No shortcuts found for appId: ${appId}`);
                 return;
             }
 
@@ -182,7 +182,7 @@ export const CSOStoredData = GObject.registerClass(
 
                 this.emit('data-updated');
             } else {
-                console.error(`Shortcut entry not found for appId: ${appId}, name: ${name}, shortcut: ${shortcut.join(' ')}`);
+                this._logger.error(`Shortcut entry not found for appId: ${appId}, name: ${name}, shortcut: ${shortcut.join(' ')}`);
             }
         }
     }

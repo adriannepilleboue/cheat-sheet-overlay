@@ -45,9 +45,10 @@ export default class CSOExtension extends Extension {
         this._appOverlay.setApplicationData(appId, appName);
     }
 
-    enable() {
+    async enable() {
         this._settings = this.getSettings();
-        this._storedData = new CSOStoredData();
+        this._storedData = new CSOStoredData(this.getLogger());
+        await this._storedData.loadAllSheets();
 
         this._systemOverlay = new CSOOverlayWidget("system", _("System"), 0.0);
         this._systemOverlay.setStoredData(this._storedData);

@@ -13,7 +13,7 @@ Then, run the JavaScript linter with: `npm run lint`
 ## Schemas
 To compile the schemas:
 ```
-glib-compile-schemas schemas/
+glib-compile-schemas src/schemas/
 ```
 
 ## Translation
@@ -25,4 +25,17 @@ xgettext -o po/template.pot -L JavaScript --from-code=UTF-8 src/*.js src/compone
 To compile a translation:
 ```
 msgfmt po/fr.po -o src/locale/fr/LC_MESSAGES/cheat.sheet.overlay@apilleboue.me.mo
+```
+
+## Package
+To create a package:
+```
+cd ~/.local/share/gnome-shell/extensions
+gnome-extensions pack \
+    --extra-source=components/  \
+    --extra-source=locale/  \
+    --extra-source=ui/  \
+    --extra-source=sheet.schema.json  \
+    cheat.sheet.overlay@apilleboue.me
+
 ```
