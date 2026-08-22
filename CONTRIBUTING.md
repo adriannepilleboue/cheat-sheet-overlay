@@ -24,5 +24,5 @@ xgettext -o po/template.pot -L JavaScript --from-code=UTF-8 src/*.js src/compone
 
 To compile a translation:
 ```
-msgfmt po/fr.po -o locale/fr/LC_MESSAGES/cheat.sheet@overlay.org.mo
+msgfmt po/fr.po -o src/locale/fr/LC_MESSAGES/cheat.sheet.overlay@apilleboue.me.mo
 ```

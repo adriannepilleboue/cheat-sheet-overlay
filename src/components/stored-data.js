@@ -21,7 +21,7 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
 const extension = ".json";
-const schemaPath = "../../.local/share/gnome-shell/extensions/cheat.sheet@overlay.org/sheet.schema.json";
+const schemaPath = "../../.local/share/gnome-shell/extensions/cheat.sheet.overlay@apilleboue.me/sheet.schema.json";
 
 ///////////////////////////////////////////////////////////////
 export const CSOStoredData = GObject.registerClass(

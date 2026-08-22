@@ -18,8 +18,7 @@
 import Gdk from 'gi://Gdk';
 import Gtk from 'gi://Gtk';
 import Adw from 'gi://Adw';
-import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
-import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 export default class CheatSheetOverlayPreferences extends ExtensionPreferences {
     _augmentToggleOverlayRow(settings, page, row) {
