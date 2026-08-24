@@ -47,7 +47,7 @@ export default class CSOExtension extends Extension {
 
     async enable() {
         this._settings = this.getSettings();
-        this._storedData = new CSOStoredData(this.getLogger());
+        this._storedData = new CSOStoredData(this.getLogger(), this.path);
         await this._storedData.loadAllSheets();
 
         this._systemOverlay = new CSOOverlayWidget("system", _("System"), 0.0);

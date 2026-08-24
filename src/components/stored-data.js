@@ -21,7 +21,6 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
 const extension = ".json";
-const schemaPath = "../../.local/share/gnome-shell/extensions/cheat.sheet.overlay@apilleboue.me/sheet.schema.json";
 
 ///////////////////////////////////////////////////////////////
 export const CSOStoredData = GObject.registerClass(
@@ -97,7 +96,7 @@ export const CSOStoredData = GObject.registerClass(
         _saveOneSheet(filePath, appId) {
             const appShortcuts = this._appShortcuts[appId] ?? [];
             const dataToSave = {
-                $schema: schemaPath,
+                $schema: this.extensionPath + "/sheet.schema.json",
                 shortcuts: appShortcuts,
             };
 
@@ -109,11 +108,12 @@ export const CSOStoredData = GObject.registerClass(
             }
         }
 
-        constructor(logger) {
+        constructor(logger, extensionPath) {
             super();
 
             this._appShortcuts = {};
             this._logger = logger;
+            this.extensionPath = extensionPath;
         }
 
         getAppShortcuts(appId) {

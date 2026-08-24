@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="org.gnome.shell.extensions.cheatsheetoverlay" path="/org/gnome/shell/extensions/cheat-sheet-overlay/">
+  <schema id="org.gnome.shell.extensions.cheatsheetoverlay" path="/org/gnome/shell/extensions/cheatsheetoverlay/">
     <key type="as" name="toggle-overlay">
       <default><![CDATA[['<Super>F2']]]></default>
       <summary>Toggle overlay</summary>
