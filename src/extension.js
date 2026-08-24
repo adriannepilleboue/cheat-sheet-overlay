@@ -15,11 +15,11 @@
  *
  * SPDX-License-Identifier: GPL-3.0
  */
-import Clutter from 'gi://Clutter';
 import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { CSORuntimeData } from './components/runtime-data.js';
 import { CSOStoredData } from './components/stored-data.js';
 import { CSOIndicatorWidget } from './components/indicator-widget.js';
 import { CSOOverlayWidget } from './components/overlay-widget.js';
@@ -45,66 +45,82 @@ export default class CSOExtension extends Extension {
         this._appOverlay.setApplicationData(appId, appName);
     }
 
+    _onIndicatorVisibilityChanged(settings) {
+        const cfgShowIndicator = settings.get_boolean("show-indicator");
+        if (cfgShowIndicator && !this._indicator) {
+            this._indicator = new CSOIndicatorWidget(this.metadata, this._runtimeData);
+            Main.panel.addToStatusArea(this.uuid, this._indicator);
+        }
+        else if (this._indicator) {
+            this._indicator.destroy();
+            this._indicator = null;
+        }
+    }
+
     async enable() {
+        // Load data
         this._settings = this.getSettings();
+        this._runtimeData = new CSORuntimeData();
         this._storedData = new CSOStoredData(this.getLogger(), this.path);
         await this._storedData.loadAllSheets();
 
-        this._systemOverlay = new CSOOverlayWidget("system", _("System"), 0.0);
+        // Load overlay
+        this._systemOverlay = new CSOOverlayWidget(
+            this._settings,
+            "show-system-sheet",
+            this._runtimeData,
+            "system",
+            _("System"),
+            0.0
+        );
         this._systemOverlay.setStoredData(this._storedData);
 
-        this._appOverlay = new CSOOverlayWidget("", "", 1.0);
+        this._appOverlay = new CSOOverlayWidget(
+            this._settings,
+            "show-application-sheets",
+            this._runtimeData,
+            "",
+            "",
+            1.0
+        );
         this._appOverlay.setStoredData(this._storedData);
 
-        this._indicator = new CSOIndicatorWidget(this.metadata);
-        Main.panel.addToStatusArea(this.uuid, this._indicator);
-
-        this._indicatorKeybinding = Main.wm.addKeybinding(
+        // Handle keybindings
+        this._toggleOverlayKeybinding = Main.wm.addKeybinding(
             'toggle-overlay',
             this._settings,
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
             () => {
-                if (this._indicator) {
-                    this._indicator.toggleOverlay();
+                if (this._runtimeData) {
+                    this._runtimeData.toggleOverlay();
                 }
             }
         );
 
-        // Update the app overlay if the focus changed
+        // Handle focus
         this._focusSignal = global.display.connect(
             'notify::focus-window',
             () => this._onFocusChanged());
 
-        this._indicatorVisibilityHandle = this._indicator.connect(
-            'overlay-visibility-changed',
-            (object, isOverlayRequested) => {
-                if (isOverlayRequested) {
-                    this._systemOverlay.showOverlay();
-                    this._appOverlay.showOverlay();
-                }
-                else {
-                    this._systemOverlay.hideOverlay();
-                    this._appOverlay.hideOverlay();
-                }
-                return Clutter.EVENT_STOP;
-            });
+        this._onFocusChanged(); // When the extension is enabled, apply immediately the current focus.
+
+        // Handle indicator
+        this._settings.connect('changed::show-indicator', (settings) => {
+            this._onIndicatorVisibilityChanged(settings);
+        });
+        this._onIndicatorVisibilityChanged(this._settings);
     }
 
     disable() {
-        if (this._indicatorKeybinding) {
+        if (this._toggleOverlayKeybinding) {
             Main.wm.removeKeybinding('toggle-overlay');
-            this._indicatorKeybinding = null;
+            this._toggleOverlayKeybinding = null;
         }
 
         if (this._focusSignal) {
             global.display.disconnect(this._focusSignal);
             this._focusSignal = null;
-        }
-
-        if (this._indicatorVisibilityHandle) {
-            this._indicator?.disconnect(this._indicatorVisibilityHandle);
-            this._indicatorVisibilityHandle = null;
         }
 
         this._indicator?.destroy();
@@ -117,6 +133,7 @@ export default class CSOExtension extends Extension {
         this._systemOverlay = null;
 
         this._storedData = null;
+        this._runtimeData = null;
         this._settings = null;
     }
 }

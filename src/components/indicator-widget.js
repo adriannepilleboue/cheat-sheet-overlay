@@ -23,26 +23,15 @@ import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 
 ///////////////////////////////////////////////////////////////
 export const CSOIndicatorWidget = GObject.registerClass(
-    {
-        Signals: {
-            'overlay-visibility-changed': {
-                param_types: [GObject.TYPE_BOOLEAN],
-            }
-        },
-    },
     class GCSOIndicatorWidget extends PanelMenu.Button {
-        toggleOverlay() {
-            this._isOverlayRequested = !this._isOverlayRequested;
-            this.emit('overlay-visibility-changed', this._isOverlayRequested);
-        }
-
-        constructor(metadata) {
+        constructor(metadata, runtimeData) {
             super(
                 0.0,
                 metadata.name,
                 true // Don't create menu, we will do it as an overlay manually
             );
 
+            this._runtimeData = runtimeData;
             this._isOverlayRequested = false;
 
             // Button / Box / Icon
@@ -53,7 +42,7 @@ export const CSOIndicatorWidget = GObject.registerClass(
             this.add_child(icon);
 
             this.connect('button-press-event', () => {
-                this.toggleOverlay();
+                this._runtimeData.toggleOverlay();
                 return Clutter.EVENT_STOP;
             });
         }

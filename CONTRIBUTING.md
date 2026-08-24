@@ -19,7 +19,7 @@ glib-compile-schemas src/schemas/
 ## Translation
 Regenerate the template.pot file:
 ```
-xgettext -o po/template.pot -L JavaScript --from-code=UTF-8 src/*.js src/components/*.js
+xgettext -o po/template.pot --from-code=UTF-8 src/*.js src/components/*.js src/ui/prefs.ui
 ```
 
 To compile a translation:

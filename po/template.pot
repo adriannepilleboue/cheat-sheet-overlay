@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-22 19:12+0200\n"
+"POT-Creation-Date: 2026-08-24 23:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/extension.js:52
+#: src/extension.js:73
 msgid "System"
 msgstr ""
 
-#: src/prefs.js:27
+#: src/prefs.js:28
 msgid "Select a shortcut"
 msgstr ""
 
-#: src/prefs.js:43
+#: src/prefs.js:44
 msgid "Define new shortcut"
 msgstr ""
 
-#: src/components/overlay-widget.js:77 src/ui/prefs.ui:11
+#: src/components/overlay-widget.js:77 src/ui/prefs.ui:62
 msgid "Shortcuts"
 msgstr ""
 
@@ -65,10 +65,38 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
+#: src/ui/prefs.ui:11
+msgid "General"
+msgstr ""
+
 #: src/ui/prefs.ui:15
-msgid "Toggle overlay"
+msgid "Show indicator"
 msgstr ""
 
 #: src/ui/prefs.ui:16 src/ui/prefs.ui:17
+msgid "Show the indicator in the top bar"
+msgstr ""
+
+#: src/ui/prefs.ui:30
+msgid "Show system sheet"
+msgstr ""
+
+#: src/ui/prefs.ui:31 src/ui/prefs.ui:32
+msgid "Show system sheet in the overlay"
+msgstr ""
+
+#: src/ui/prefs.ui:45
+msgid "Show application sheets"
+msgstr ""
+
+#: src/ui/prefs.ui:46 src/ui/prefs.ui:47
+msgid "Show application sheets in the overlay"
+msgstr ""
+
+#: src/ui/prefs.ui:66
+msgid "Toggle overlay"
+msgstr ""
+
+#: src/ui/prefs.ui:67 src/ui/prefs.ui:68
 msgid "Shortcut to toggle the cheat sheet overlay"
 msgstr ""

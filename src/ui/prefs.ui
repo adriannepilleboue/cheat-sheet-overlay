@@ -8,6 +8,57 @@
 
     <child>
       <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">General</property>
+
+        <child>
+          <object class="AdwActionRow" id="show-indicator-row">
+            <property name="title" translatable="yes">Show indicator</property>
+            <property name="subtitle" translatable="yes">Show the indicator in the top bar</property>
+            <property name="tooltip-text" translatable="yes">Show the indicator in the top bar</property>
+            
+            <child>
+              <object class="GtkSwitch" id="show-indicator-switch">
+                <property name="halign">end</property>
+                <property name="valign">center</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="AdwActionRow" id="show-system-sheet-row">
+            <property name="title" translatable="yes">Show system sheet</property>
+            <property name="subtitle" translatable="yes">Show system sheet in the overlay</property>
+            <property name="tooltip-text" translatable="yes">Show system sheet in the overlay</property>
+            
+            <child>
+              <object class="GtkSwitch" id="show-system-sheet-switch">
+                <property name="halign">end</property>
+                <property name="valign">center</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="AdwActionRow" id="show-application-sheets-row">
+            <property name="title" translatable="yes">Show application sheets</property>
+            <property name="subtitle" translatable="yes">Show application sheets in the overlay</property>
+            <property name="tooltip-text" translatable="yes">Show application sheets in the overlay</property>
+            
+            <child>
+              <object class="GtkSwitch" id="show-application-sheets-switch">
+                <property name="halign">end</property>
+                <property name="valign">center</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="AdwPreferencesGroup">
         <property name="title" translatable="yes">Shortcuts</property>
 
         <child>

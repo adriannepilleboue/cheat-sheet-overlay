@@ -86,15 +86,18 @@ export const CSOOverlayWidget = GObject.registerClass(
             addButton.connect('clicked', () => this._showNewShortcutDialog());
         }
 
-        constructor(appId, appName, horizontalAlignement) {
+        constructor(settings, settingsVisibilityKey, runtimeData, appId, appName, horizontalAlignement) {
             super({
                 vertical: true,
                 style_class: 'popup-menu-content cso-overlay',
             });
 
+            this._settings = settings;
+            this._runtimeData = runtimeData;
             this._storedData = null;
             this._sheetTitle = null;
             this._dataUpdatedHandler = null;
+            this._isOverlayEnabled = this._settings.get_boolean(settingsVisibilityKey);
             this._isOverlayRequested = false;
             this._shouldBeDisplayed = false;
             this._isChromeAdded = false;
@@ -124,6 +127,23 @@ export const CSOOverlayWidget = GObject.registerClass(
             this.add_child(this._sheetTitle);
 
             this._buildShortcutHeader();
+
+            // Handle connexions
+            this._overlayDisplayedHandle = this._runtimeData.connect(
+                'overlay-visibility-changed',
+                (object, isOverlayRequested) => {
+                    this._isOverlayRequested = isOverlayRequested;
+                    if (this._isOverlayRequested) {
+                        this._updateContent();
+                    }
+                    this._updateVisibility();
+                    return Clutter.EVENT_STOP;
+                });
+
+            this._settingsChangedHandler = this._settings.connect('changed::' + settingsVisibilityKey, () => {
+                this._isOverlayEnabled = this._settings.get_boolean(settingsVisibilityKey);
+                this._updateVisibility();
+            });
         }
 
         _updateContent() {
@@ -196,7 +216,7 @@ export const CSOOverlayWidget = GObject.registerClass(
         }
 
         _updateVisibility() {
-            const shouldBeDisplayed = (this._appId !== "" && this._isOverlayRequested);
+            const shouldBeDisplayed = (this._isOverlayEnabled && this._appId !== "" && this._isOverlayRequested);
             if (shouldBeDisplayed !== this._shouldBeDisplayed) {
                 this._shouldBeDisplayed = shouldBeDisplayed;
                 if (this._shouldBeDisplayed) {
@@ -223,11 +243,24 @@ export const CSOOverlayWidget = GObject.registerClass(
         }
 
         destroy() {
+            // Disconnect settings signal
+            if (this._settings && this._settingsChangedHandler) {
+                this._settings.disconnect(this._settingsChangedHandler);
+                this._settingsChangedHandler = null;
+            }
+            // Disconnect data-updated signal
             if (this._storedData && this._dataUpdatedHandler) {
                 this._storedData.disconnect(this._dataUpdatedHandler);
                 this._dataUpdatedHandler = null;
             }
 
+            // Disconnect overlay-visibility-changed signal
+            if (this._runtimeData && this._overlayDisplayedHandle) {
+                this._runtimeData.disconnect(this._overlayDisplayedHandle);
+                this._overlayDisplayedHandle = null;
+            }
+
+            // Remove overlay
             if (this._isChromeAdded) {
                 Main.layoutManager.removeChrome(this);
                 this._shouldBeDisplayed = false;
@@ -241,17 +274,6 @@ export const CSOOverlayWidget = GObject.registerClass(
             this._appId = appId;
             this._appName = appName;
             this._updateContent();
-            this._updateVisibility();
-        }
-
-        showOverlay() {
-            this._isOverlayRequested = true;
-            this._updateContent();
-            this._updateVisibility();
-        }
-
-        hideOverlay() {
-            this._isOverlayRequested = false;
             this._updateVisibility();
         }
     }

@@ -17,6 +17,7 @@
  */
 import Gdk from 'gi://Gdk';
 import Gtk from 'gi://Gtk';
+import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
@@ -93,7 +94,22 @@ export default class CheatSheetOverlayPreferences extends ExtensionPreferences {
 
         const page = builder.get_object('preferences-page');
 
-        // Add more stuff to the row "toggle-overlay-row"."
+        // General Group / Show Indicator
+        const showIndicatorSwitch = builder.get_object('show-indicator-switch');
+        showIndicatorSwitch.set_active(settings.get_boolean('show-indicator'));
+        settings.bind('show-indicator', showIndicatorSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+        
+        // General Group / Show System Sheet
+        const showSystemSheetSwitch = builder.get_object('show-system-sheet-switch');
+        showSystemSheetSwitch.set_active(settings.get_boolean('show-system-sheet'));
+        settings.bind('show-system-sheet', showSystemSheetSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+        
+        // General Group / Show Application Sheets
+        const showApplicationSheetsSwitch = builder.get_object('show-application-sheets-switch');
+        showApplicationSheetsSwitch.set_active(settings.get_boolean('show-application-sheets'));
+        settings.bind('show-application-sheets', showApplicationSheetsSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+        // Shortcut Group / Toggle Overlay
         this._augmentToggleOverlayRow(settings, page, builder.get_object('toggle-overlay-row'));
 
         window.add(page);
