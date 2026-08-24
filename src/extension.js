@@ -106,7 +106,7 @@ export default class CSOExtension extends Extension {
         this._onFocusChanged(); // When the extension is enabled, apply immediately the current focus.
 
         // Handle indicator
-        this._settings.connect('changed::show-indicator', (settings) => {
+        this._settingsShowIndicatorHandler = this._settings.connect('changed::show-indicator', (settings) => {
             this._onIndicatorVisibilityChanged(settings);
         });
         this._onIndicatorVisibilityChanged(this._settings);
@@ -122,6 +122,9 @@ export default class CSOExtension extends Extension {
             global.display.disconnect(this._focusSignal);
             this._focusSignal = null;
         }
+
+        this._settings.disconnect(this._settingsShowIndicatorHandler);
+        this._settingsShowIndicatorHandler = null;
 
         this._indicator?.destroy();
         this._indicator = null;
