@@ -41,7 +41,7 @@ export const CSOShortcutDialog = GObject.registerClass(
                 destroyOnClose: true, // Automatically cleans up memory when closed
             });
 
-            const isInEditMode = shortcutDescription && shortcutKeysStr;
+            const isInEditMode = shortcutDescription || shortcutKeysStr;
 
             const vbox = new St.BoxLayout({
                 style_class: 'cso-shortcut-dialog-vbox',
@@ -102,16 +102,36 @@ export const CSOShortcutDialog = GObject.registerClass(
                 deleteButton.add_style_class_name('cso-shortcut-dialog-delete-button');
             }
 
-            this.addButton({
+            const saveButton = this.addButton({
                 label: _('Save'),
                 action: () => {
                     const description = descriptionEntry.get_text().trim();
                     const shortcut = shortcutEntry.get_text().trim();
 
+                    if (!description || !shortcut) {
+                        return;
+                    }
+
                     this.emit('form-filled', description, shortcut);
                     this.close();
                 },
             });
+
+            const updateSaveButtonState = () => {
+                const description = descriptionEntry.get_text().trim();
+                const shortcut = shortcutEntry.get_text().trim();
+                const isValid = description.length > 0 && shortcut.length > 0;
+
+                saveButton.reactive = isValid;
+                saveButton.can_focus = isValid;
+                saveButton.sensitive = isValid;
+            };
+
+            // No need to disconnect here, since both part will be destructed together
+            descriptionEntry.connect('notify::text', updateSaveButtonState);
+            shortcutEntry.connect('notify::text', updateSaveButtonState);
+
+            updateSaveButtonState();
         }
     }
 );
