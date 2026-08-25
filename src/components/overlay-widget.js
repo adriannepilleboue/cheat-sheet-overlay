@@ -86,7 +86,14 @@ export const CSOOverlayWidget = GObject.registerClass(
             addButton.connect('clicked', () => this._showNewShortcutDialog());
         }
 
-        constructor(settings, settingsVisibilityKey, runtimeData, appId, appName, horizontalAlignement) {
+        constructor(
+            settings,
+            settingsVisibilityKey,
+            runtimeData,
+            appId,
+            appName,
+            horizontalAlignement
+        ) {
             super({
                 vertical: true,
                 style_class: 'popup-menu-content cso-overlay',
@@ -144,6 +151,10 @@ export const CSOOverlayWidget = GObject.registerClass(
                 this._isOverlayEnabled = this._settings.get_boolean(settingsVisibilityKey);
                 this._updateVisibility();
             });
+
+            this._modifiersMonitoringHandle = this._runtimeData.connect('modifiers-changed', () => {
+                this._updateContent();
+            });
         }
 
         _updateContent() {
@@ -157,7 +168,9 @@ export const CSOOverlayWidget = GObject.registerClass(
                     this._shortcutsSheet.destroy();
                     this._shortcutsSheet = null;
                 }
-                this._shortcutsSheet = new CSOShortcutsSheetWidget(appShortcuts);
+
+                const modifiersState = this._runtimeData.getModifiersState();
+                this._shortcutsSheet = new CSOShortcutsSheetWidget(appShortcuts, modifiersState);
                 this.add_child(this._shortcutsSheet);
 
                 this._shortcutsSheet.connect('shortcut-clicked', (object, description, keys) => {
@@ -243,6 +256,12 @@ export const CSOOverlayWidget = GObject.registerClass(
         }
 
         destroy() {
+            // Disconnect modifiers monitoring
+            if (this._runtimeData && this._modifiersMonitoringHandle) {
+                this._runtimeData.disconnect(this._modifiersMonitoringHandle);
+                this._modifiersMonitoringHandle = null;
+            }
+
             // Disconnect settings signal
             if (this._settings && this._settingsChangedHandler) {
                 this._settings.disconnect(this._settingsChangedHandler);

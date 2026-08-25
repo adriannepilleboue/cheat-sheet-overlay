@@ -31,7 +31,7 @@ export const CSOShortcutsSheetWidget = GObject.registerClass(
         },
     },
     class GCSOShortcutsSheetWidget extends St.BoxLayout {
-        _addShortcutEntry(shortcutEntry) {
+        _addShortcutEntry(shortcutEntry, modifiersState) {
             const button = new St.Button({
                 style_class: 'cso-shortcuts-sheet-button',
                 reactive: true,
@@ -52,7 +52,7 @@ export const CSOShortcutsSheetWidget = GObject.registerClass(
                 x_expand: true
             }));
 
-            hbox.add_child(new CSOShortcutWidget(shortcutEntry.shortcut));
+            hbox.add_child(new CSOShortcutWidget(shortcutEntry.shortcut, modifiersState));
 
             button.connect('clicked', () => {
                 this.emit('shortcut-clicked', shortcutEntry.name, shortcutEntry.shortcut.join(' '));
@@ -61,7 +61,7 @@ export const CSOShortcutsSheetWidget = GObject.registerClass(
             this.add_child(button);
         }
 
-        constructor(shortcutsData) {
+        constructor(shortcutsData, modifiersState) {
             super({
                 vertical: true,
                 style_class: 'cso-shortcuts-sheet-vbox',
@@ -69,7 +69,7 @@ export const CSOShortcutsSheetWidget = GObject.registerClass(
 
             // Sheets
             shortcutsData.forEach(shortcutEntry => {
-                this._addShortcutEntry(shortcutEntry);
+                this._addShortcutEntry(shortcutEntry, modifiersState);
             });
         }
     }

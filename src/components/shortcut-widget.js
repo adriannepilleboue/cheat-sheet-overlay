@@ -17,15 +17,38 @@
  */
 
 import GObject from 'gi://GObject';
+import Clutter from 'gi://Clutter';
 import St from 'gi://St';
 
 ///////////////////////////////////////////////////////////////
 export const CSOShortcutWidget = GObject.registerClass(
     class GCSOShortcutWidget extends St.BoxLayout {
-        constructor(keys) {
+        constructor(keys, modifiersState) {
             super({
                 style_class: 'cso-shortcut-hbox',
                 x_expand: false,
+            });
+
+            const isSuperPressed =
+                ((modifiersState & Clutter.ModifierType.SUPER_MASK) !== 0) ||
+                ((modifiersState & Clutter.ModifierType.META_MASK) !== 0) ||
+                ((modifiersState & Clutter.ModifierType.HYPER_MASK) !== 0) ||
+                ((modifiersState & Clutter.ModifierType.MOD4_MASK) !== 0);
+            const isCtrlPressed = (modifiersState & Clutter.ModifierType.CONTROL_MASK) !== 0;
+            const isAltPressed = (modifiersState & Clutter.ModifierType.MOD1_MASK) !== 0;
+            const isShiftPressed = (modifiersState & Clutter.ModifierType.SHIFT_MASK) !== 0;
+
+            let isSuperInvolved = false;
+            let isCtrlInvolved = false;
+            let isAltInvolved = false;
+            let isShiftInvolved = false;
+
+            keys.forEach(keyName => {
+                const lowerCaseKeyName = keyName.toLowerCase();
+                isSuperInvolved |= (lowerCaseKeyName === "super");
+                isCtrlInvolved |= (lowerCaseKeyName === "ctrl");
+                isAltInvolved |= (lowerCaseKeyName === "alt");
+                isShiftInvolved |= (lowerCaseKeyName === "shift");
             });
 
             keys.forEach(keyName => {
@@ -35,18 +58,35 @@ export const CSOShortcutWidget = GObject.registerClass(
                     style_class: 'cso-shortcut-key',
                 });
 
-                const lowerCaseKeyName = keyName.toLowerCase();
-                if (lowerCaseKeyName === "super") {
-                    descriptionLabel.add_style_class_name('cso-shortcut-super');
-                }
-                else if (lowerCaseKeyName === "ctrl") {
-                    descriptionLabel.add_style_class_name('cso-shortcut-ctrl');
-                }
-                else if (lowerCaseKeyName === "alt") {
-                    descriptionLabel.add_style_class_name('cso-shortcut-alt');
-                }
-                else if (lowerCaseKeyName === "shift") {
-                    descriptionLabel.add_style_class_name('cso-shortcut-shift');
+                if (
+                    (isSuperPressed && !isSuperInvolved) ||
+                    (isCtrlPressed && !isCtrlInvolved) ||
+                    (isAltPressed && !isAltInvolved) ||
+                    (isShiftPressed && !isShiftInvolved)
+                ) {
+                    descriptionLabel.add_style_class_name('cso-shortcut-key-disabled');
+                } else {
+                    const lowerCaseKeyName = keyName.toLowerCase();
+                    if (lowerCaseKeyName === "super") {
+                        descriptionLabel.add_style_class_name(
+                            isSuperPressed ? 'cso-shortcut-super-pressed' : 'cso-shortcut-super'
+                        );
+                    }
+                    else if (lowerCaseKeyName === "ctrl") {
+                        descriptionLabel.add_style_class_name(
+                            isCtrlPressed ? 'cso-shortcut-ctrl-pressed' : 'cso-shortcut-ctrl'
+                        );
+                    }
+                    else if (lowerCaseKeyName === "alt") {
+                        descriptionLabel.add_style_class_name(
+                            isAltPressed ? 'cso-shortcut-alt-pressed' : 'cso-shortcut-alt'
+                        );
+                    }
+                    else if (lowerCaseKeyName === "shift") {
+                        descriptionLabel.add_style_class_name(
+                            isShiftPressed ? 'cso-shortcut-shift-pressed' : 'cso-shortcut-shift'
+                        );
+                    }
                 }
 
                 this.add_child(descriptionLabel); // 'this' is the box layout itself

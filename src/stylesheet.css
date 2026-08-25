@@ -69,6 +69,13 @@
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
 }
 
+.cso-shortcut-key-disabled {
+    color: #4f4f4f;
+    background-color: #2b2b2b;
+    border: 0.1em dashed #2b2b2b;
+    border-bottom-width: 0.3em;
+}
+
 /*
 Adwaita Accent Colors can be found here:
 https://gitlab.gnome.org/GNOME/libadwaita/-/blob/main/src/stylesheet/_colors.scss?ref_type=heads
@@ -76,14 +83,42 @@ https://gitlab.gnome.org/GNOME/libadwaita/-/blob/main/src/stylesheet/_colors.scs
 .cso-shortcut-super {
     border-color: #d56199;  /* Adwaita Accent Pink */
 }
+.cso-shortcut-super-pressed {
+    border-color: #d56199;  /* Adwaita Accent Pink */
+    background-color: #d56199;
+    color: #f7f7f7;
+    border-bottom-width: 0.1em;
+    border-top-width: 0.3em;
+}
 .cso-shortcut-ctrl {
     border-color: #3584e4;  /* Adwaita Accent Blue */
+}
+.cso-shortcut-ctrl-pressed {
+    border-color: #3584e4;  /* Adwaita Accent Blue */
+    background-color: #3584e4;
+    color: #f7f7f7;
+    border-bottom-width: 0.1em;
+    border-top-width: 0.3em;
 }
 .cso-shortcut-alt {
     border-color: #3a944a;  /* Adwaita Accent Green */
 }
+.cso-shortcut-alt-pressed {
+    border-color: #3a944a;  /* Adwaita Accent Green */
+    background-color: #3a944a;
+    color: #f7f7f7;
+    border-bottom-width: 0.1em;
+    border-top-width: 0.3em;
+}
 .cso-shortcut-shift {
     border-color: #ed5b00;  /* Adwaita Accent Orange */
+}
+.cso-shortcut-shift-pressed {
+    border-color: #ed5b00;  /* Adwaita Accent Orange */
+    background-color: #ed5b00;
+    color: #f7f7f7;
+    border-bottom-width: 0.1em;
+    border-top-width: 0.3em;
 }
 
 /* CSOIconButtonWidget */
