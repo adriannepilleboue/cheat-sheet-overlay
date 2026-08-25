@@ -34,6 +34,21 @@ export const CSOShortcutWidget = GObject.registerClass(
                     x_expand: false,
                     style_class: 'cso-shortcut-key',
                 });
+
+                const lowerCaseKeyName = keyName.toLowerCase();
+                if (lowerCaseKeyName === "super") {
+                    descriptionLabel.add_style_class_name('cso-shortcut-super');
+                }
+                else if (lowerCaseKeyName === "ctrl") {
+                    descriptionLabel.add_style_class_name('cso-shortcut-ctrl');
+                }
+                else if (lowerCaseKeyName === "alt") {
+                    descriptionLabel.add_style_class_name('cso-shortcut-alt');
+                }
+                else if (lowerCaseKeyName === "shift") {
+                    descriptionLabel.add_style_class_name('cso-shortcut-shift');
+                }
+
                 this.add_child(descriptionLabel); // 'this' is the box layout itself
             });
         }
