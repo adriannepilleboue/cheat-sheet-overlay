@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-24 23:14+0200\n"
+"POT-Creation-Date: 2026-08-26 09:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/extension.js:73
+#: src/extension.js:85
 msgid "System"
 msgstr ""
 
@@ -29,7 +29,7 @@ msgstr ""
 msgid "Define new shortcut"
 msgstr ""
 
-#: src/components/overlay-widget.js:77 src/ui/prefs.ui:62
+#: src/components/overlay-widget.js:77 src/ui/prefs.ui:78
 msgid "Shortcuts"
 msgstr ""
 
@@ -93,10 +93,18 @@ msgstr ""
 msgid "Show application sheets in the overlay"
 msgstr ""
 
-#: src/ui/prefs.ui:66
+#: src/ui/prefs.ui:60
+msgid "Show pressed special keys"
+msgstr ""
+
+#: src/ui/prefs.ui:61 src/ui/prefs.ui:62
+msgid "Show pressed Ctrl, Alt, Shift and Super keys"
+msgstr ""
+
+#: src/ui/prefs.ui:82
 msgid "Toggle overlay"
 msgstr ""
 
-#: src/ui/prefs.ui:67 src/ui/prefs.ui:68
+#: src/ui/prefs.ui:83 src/ui/prefs.ui:84
 msgid "Shortcut to toggle the cheat sheet overlay"
 msgstr ""

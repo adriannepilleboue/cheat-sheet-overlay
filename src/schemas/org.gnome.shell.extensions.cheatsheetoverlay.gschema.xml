@@ -16,6 +16,11 @@
       <summary>Show application sheets</summary>
       <description>Show application sheets in the overlay.</description>
     </key>
+    <key type="b" name="live-modifiers">
+      <default>true</default>
+      <summary>Show pressed special keys</summary>
+      <description>Show pressed Ctrl, Alt, Shift and Super keys.</description>
+    </key>
     <key type="as" name="toggle-overlay">
       <default><![CDATA[['<Super>F2']]]></default>
       <summary>Toggle overlay</summary>

@@ -109,6 +109,11 @@ export default class CheatSheetOverlayPreferences extends ExtensionPreferences {
         showApplicationSheetsSwitch.set_active(settings.get_boolean('show-application-sheets'));
         settings.bind('show-application-sheets', showApplicationSheetsSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
+        // General Group / Show Live Modifiers
+        const liveModifiersSwitch = builder.get_object('live-modifiers-switch');
+        liveModifiersSwitch.set_active(settings.get_boolean('live-modifiers'));
+        settings.bind('live-modifiers', liveModifiersSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
         // Shortcut Group / Toggle Overlay
         this._augmentToggleOverlayRow(settings, page, builder.get_object('toggle-overlay-row'));
 

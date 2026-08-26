@@ -57,6 +57,18 @@ export default class CSOExtension extends Extension {
         }
     }
 
+    _onLiveModifiersChanged(settings) {
+        if (this._runtimeData) {
+            const cfgLiveModifiers = settings.get_boolean("live-modifiers");
+            if (cfgLiveModifiers) {
+                this._runtimeData.enableLiveModifiers();
+            }
+            else {
+                this._runtimeData.disableLiveModifiers();
+            }
+        }
+    }
+
     async enable() {
         // Load data
         this._settings = this.getSettings();
@@ -110,6 +122,12 @@ export default class CSOExtension extends Extension {
             this._onIndicatorVisibilityChanged(settings);
         });
         this._onIndicatorVisibilityChanged(this._settings);
+
+        // Live modifiers
+        this._settingsLiveModifiersHandler = this._settings.connect('changed::live-modifiers', (settings) => {
+            this._onLiveModifiersChanged(this._settings);
+        });
+        this._onLiveModifiersChanged(this._settings);
     }
 
     disable() {

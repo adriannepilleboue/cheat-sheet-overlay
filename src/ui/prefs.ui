@@ -54,6 +54,22 @@
             </child>
           </object>
         </child>
+
+        <child>
+          <object class="AdwActionRow" id="live-modifiers-row">
+            <property name="title" translatable="yes">Show pressed special keys</property>
+            <property name="subtitle" translatable="yes">Show pressed Ctrl, Alt, Shift and Super keys</property>
+            <property name="tooltip-text" translatable="yes">Show pressed Ctrl, Alt, Shift and Super keys</property>
+            
+            <child>
+              <object class="GtkSwitch" id="live-modifiers-switch">
+                <property name="halign">end</property>
+                <property name="valign">center</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
       </object>
     </child>
 

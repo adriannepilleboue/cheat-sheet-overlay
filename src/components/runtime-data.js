@@ -43,6 +43,28 @@ export const CSORuntimeData = GObject.registerClass(
             this.emit('overlay-visibility-changed', this._isOverlayDisplayed);
         }
 
+        destroy() {
+            this._stopModifierMonitoring();
+            super.destroy();
+        }
+
+        //////////////////////////////////////////////////////
+        // Overlay
+        toggleOverlay() {
+            this._isOverlayDisplayed = !this._isOverlayDisplayed;
+
+            if (this._isOverlayDisplayed) {
+                this._startModifierMonitoring();
+            }
+            else {
+                this._stopModifierMonitoring();
+            }
+
+            this.emit('overlay-visibility-changed', this._isOverlayDisplayed);
+        }
+
+        //////////////////////////////////////////////////////
+        // Modifiers
         _onNewPointerState(state) {
             const monitoredModifierMask = Clutter.ModifierType.SHIFT_MASK |
                 Clutter.ModifierType.CONTROL_MASK |
@@ -78,6 +100,8 @@ export const CSORuntimeData = GObject.registerClass(
         }
 
         _stopModifierMonitoring() {
+            this._modifiersState = 0;
+            
             if (this._pointerTimeoutHandle !== null) {
                 GLib.Source.remove(this._pointerTimeoutHandle);
                 this._pointerTimeoutHandle = null;
@@ -88,22 +112,18 @@ export const CSORuntimeData = GObject.registerClass(
             return this._modifiersState;
         }
 
-        toggleOverlay() {
-            this._isOverlayDisplayed = !this._isOverlayDisplayed;
-
+        enableLiveModifiers() {
             if (this._isOverlayDisplayed) {
                 this._startModifierMonitoring();
             }
-            else {
-                this._stopModifierMonitoring();
-            }
-
-            this.emit('overlay-visibility-changed', this._isOverlayDisplayed);
         }
 
-        destroy() {
+        disableLiveModifiers() {
             this._stopModifierMonitoring();
-            super.destroy();
+
+            if (this._isOverlayDisplayed) {
+                this.emit('modifiers-changed');
+            }
         }
     }
 );
