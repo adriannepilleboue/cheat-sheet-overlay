@@ -20,6 +20,7 @@ import GObject from 'gi://GObject';
 import St from 'gi://St';
 import Clutter from 'gi://Clutter';
 import { CSOShortcutWidget } from './shortcut-widget.js';
+import { compatibleVertical } from '../compatibility.js';
 
 ///////////////////////////////////////////////////////////////
 export const CSOShortcutsSheetWidget = GObject.registerClass(
@@ -36,7 +37,6 @@ export const CSOShortcutsSheetWidget = GObject.registerClass(
                 style_class: 'cso-shortcuts-sheet-button',
                 reactive: true,
                 can_focus: true,
-                track_hover: true,
             });
 
             const hbox = new St.BoxLayout({
@@ -54,16 +54,16 @@ export const CSOShortcutsSheetWidget = GObject.registerClass(
 
             hbox.add_child(new CSOShortcutWidget(shortcutEntry.shortcut));
 
-            button.connect('clicked', () => {
+            button.connectObject('clicked', () => {
                 this.emit('shortcut-clicked', shortcutEntry.name, shortcutEntry.shortcut.join(' '));
-            });
+            }, this);
 
             this.add_child(button);
         }
 
         constructor(shortcutsData) {
             super({
-                vertical: true,
+                ...compatibleVertical(),
                 style_class: 'cso-shortcuts-sheet-vbox',
             });
 

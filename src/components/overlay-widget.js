@@ -24,16 +24,17 @@ import { CSOShortcutsSheetWidget } from './shortcuts-sheet-widget.js';
 import { CSOShortcutDialog } from './shortcut-dialog.js';
 import { CSOIconButtonWidget } from './icon-button-widget.js';
 import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { compatibleVertical } from '../compatibility.js';
 
 export const CSOOverlayWidget = GObject.registerClass(
     class GCSOOverlayWidget extends St.BoxLayout {
         _showNewShortcutDialog() {
-            const dialog = new CSOShortcutDialog();
+            const dialog = new CSOShortcutDialog(this._appId);
 
-            dialog.connect('form-filled', (object, description, shortcutString) => {
+            dialog.connect('form-filled', (object, appId, description, shortcutString) => {
                 if (this._storedData) {
                     const shortcut = shortcutString.split(' ');
-                    this._storedData.addShortcut(this._appId, description, shortcut);
+                    this._storedData.addShortcut(appId, description, shortcut);
                 }
             });
 
@@ -43,13 +44,13 @@ export const CSOOverlayWidget = GObject.registerClass(
         _showEditShortcutDialog(shortcutDescription, shortcutKeysStr) {
             this._editedShortcutDescription = shortcutDescription;
             this._editedShortcutKeysStr = shortcutKeysStr;
-            const dialog = new CSOShortcutDialog(shortcutDescription, shortcutKeysStr);
+            const dialog = new CSOShortcutDialog(this._appId, shortcutDescription, shortcutKeysStr);
 
-            dialog.connect('form-filled', (object, newDescription, newShortcutStr) => {
+            dialog.connect('form-filled', (object, appId, newDescription, newShortcutStr) => {
                 if (this._storedData) {
                     const newShortcut = newShortcutStr.split(' ');
                     this._storedData.editShortcut(
-                        this._appId,
+                        appId,
                         this._editedShortcutDescription,
                         this._editedShortcutKeysStr.split(' '),
                         newDescription,
@@ -57,10 +58,10 @@ export const CSOOverlayWidget = GObject.registerClass(
                 }
             });
 
-            dialog.connect('delete-clicked', () => {
+            dialog.connect('delete-clicked', (object, appId) => {
                 if (this._storedData) {
                     const shortcut = this._editedShortcutKeysStr.split(' ');
-                    this._storedData.deleteShortcut(this._appId, this._editedShortcutDescription, shortcut);
+                    this._storedData.deleteShortcut(appId, this._editedShortcutDescription, shortcut);
                 }
             });
 
@@ -88,7 +89,7 @@ export const CSOOverlayWidget = GObject.registerClass(
 
         constructor(settings, settingsVisibilityKey, runtimeData, appId, appName, horizontalAlignement) {
             super({
-                vertical: true,
+                ...compatibleVertical(),
                 style_class: 'popup-menu-content cso-overlay',
             });
 
@@ -129,7 +130,7 @@ export const CSOOverlayWidget = GObject.registerClass(
             this._buildShortcutHeader();
 
             // Handle connexions
-            this._overlayDisplayedHandle = this._runtimeData.connect(
+            this._runtimeData.connectObject(
                 'overlay-visibility-changed',
                 (object, isOverlayRequested) => {
                     this._isOverlayRequested = isOverlayRequested;
@@ -138,12 +139,13 @@ export const CSOOverlayWidget = GObject.registerClass(
                     }
                     this._updateVisibility();
                     return Clutter.EVENT_STOP;
-                });
+                },
+                this);
 
-            this._settingsChangedHandler = this._settings.connect('changed::' + settingsVisibilityKey, () => {
+            this._settings.connectObject('changed::' + settingsVisibilityKey, () => {
                 this._isOverlayEnabled = this._settings.get_boolean(settingsVisibilityKey);
                 this._updateVisibility();
-            });
+            }, this);
         }
 
         _updateContent() {
@@ -229,7 +231,6 @@ export const CSOOverlayWidget = GObject.registerClass(
         }
 
         setStoredData(storedData) {
-            this._storedData = storedData;
             if (this._storedData && this._dataUpdatedHandler) {
                 this._storedData.disconnect(this._dataUpdatedHandler);
                 this._dataUpdatedHandler = null;
@@ -243,21 +244,10 @@ export const CSOOverlayWidget = GObject.registerClass(
         }
 
         destroy() {
-            // Disconnect settings signal
-            if (this._settings && this._settingsChangedHandler) {
-                this._settings.disconnect(this._settingsChangedHandler);
-                this._settingsChangedHandler = null;
-            }
             // Disconnect data-updated signal
             if (this._storedData && this._dataUpdatedHandler) {
                 this._storedData.disconnect(this._dataUpdatedHandler);
                 this._dataUpdatedHandler = null;
-            }
-
-            // Disconnect overlay-visibility-changed signal
-            if (this._runtimeData && this._overlayDisplayedHandle) {
-                this._runtimeData.disconnect(this._overlayDisplayedHandle);
-                this._overlayDisplayedHandle = null;
             }
 
             // Remove overlay

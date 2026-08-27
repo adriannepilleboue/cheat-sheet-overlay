@@ -36,6 +36,7 @@ gnome-extensions pack \
     --extra-source=locale/  \
     --extra-source=ui/  \
     --extra-source=sheet.schema.json  \
+    --extra-source=compatibility.js  \
     cheat.sheet.overlay@apilleboue.me
 
 ```

@@ -24,6 +24,7 @@ import { CSOStoredData } from './components/stored-data.js';
 import { CSOIndicatorWidget } from './components/indicator-widget.js';
 import { CSOOverlayWidget } from './components/overlay-widget.js';
 import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { compatibleLogger } from './compatibility.js'
 
 export default class CSOExtension extends Extension {
     _onFocusChanged() {
@@ -41,7 +42,7 @@ export default class CSOExtension extends Extension {
             appId = app?.get_id() ?? "";
             appName = app?.get_name() ?? "";
         }
-
+        
         this._appOverlay.setApplicationData(appId, appName);
     }
 
@@ -61,7 +62,7 @@ export default class CSOExtension extends Extension {
         // Load data
         this._settings = this.getSettings();
         this._runtimeData = new CSORuntimeData();
-        this._storedData = new CSOStoredData(this.getLogger(), this.path);
+        this._storedData = new CSOStoredData(compatibleLogger(this), this.path);
         await this._storedData.loadAllSheets();
 
         // Load overlay
@@ -123,8 +124,10 @@ export default class CSOExtension extends Extension {
             this._focusSignal = null;
         }
 
-        this._settings.disconnect(this._settingsShowIndicatorHandler);
-        this._settingsShowIndicatorHandler = null;
+        if (this._settingsShowIndicatorHandler) {
+            this._settings.disconnect(this._settingsShowIndicatorHandler);
+            this._settingsShowIndicatorHandler = null;
+        }
 
         this._indicator?.destroy();
         this._indicator = null;

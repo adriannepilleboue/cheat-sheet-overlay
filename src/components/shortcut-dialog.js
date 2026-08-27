@@ -21,31 +21,43 @@ import St from 'gi://St';
 import Clutter from 'gi://Clutter';
 import * as ModalDialog from 'resource:///org/gnome/shell/ui/modalDialog.js';
 import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { compatibleVertical } from '../compatibility.js';
 
 ///////////////////////////////////////////////////////////////
 export const CSOShortcutDialog = GObject.registerClass(
     {
         Signals: {
             'form-filled': {
-                param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING],
+                param_types: [
+                    GObject.TYPE_STRING,  // appID
+                    GObject.TYPE_STRING,  // description
+                    GObject.TYPE_STRING   // shortcut
+                ],
             },
             'delete-clicked': {
-                param_types: [],
+                param_types: [
+                    GObject.TYPE_STRING  // appID
+                ],
             },
         },
     },
     class GCSOShortcutDialog extends ModalDialog.ModalDialog {
-        constructor(shortcutDescription, shortcutKeysStr) {
+        constructor(appId, shortcutDescription, shortcutKeysStr) {
             super({
                 styleClass: 'popup-menu-content cso-shortcut-dialog',
                 destroyOnClose: true, // Automatically cleans up memory when closed
             });
+            
+            // On GNOME 46/48, the dialog trigger a new focus event with appId = ''.
+            // In all case, it's better to ensure that we save the shortcuts in the
+            // correct application
+            this._appId = appId;
 
             const isInEditMode = shortcutDescription && shortcutKeysStr;
 
             const vbox = new St.BoxLayout({
-                style_class: 'cso-shortcut-dialog-vbox',
-                vertical: true
+                ...compatibleVertical(),
+                style_class: 'cso-shortcut-dialog-vbox'
             });
             this.contentLayout.add_child(vbox);
 
@@ -95,7 +107,7 @@ export const CSOShortcutDialog = GObject.registerClass(
                 const deleteButton = this.addButton({
                     label: _('Delete'),
                     action: () => {
-                        this.emit('delete-clicked');
+                        this.emit('delete-clicked', this._appId);
                         this.close();
                     },
                 });
@@ -108,7 +120,7 @@ export const CSOShortcutDialog = GObject.registerClass(
                     const description = descriptionEntry.get_text().trim();
                     const shortcut = shortcutEntry.get_text().trim();
 
-                    this.emit('form-filled', description, shortcut);
+                    this.emit('form-filled', this._appId, description, shortcut);
                     this.close();
                 },
             });

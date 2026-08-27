@@ -1,4 +1,5 @@
 {
+  "version-name": "50.0.4",
   "name": "Cheat Sheet Overlay",
   "description": "Display a cheat sheet overlay with a per-application list of shortcuts",
   "uuid": "cheat.sheet.overlay@apilleboue.me",
@@ -6,6 +7,10 @@
   "gettext-domain": "cheat.sheet.overlay@apilleboue.me",
   "url": "https://github.com/adriannepilleboue/cheat-sheet-overlay",
   "shell-version": [
+    "46",
+    "47",
+    "48",
+    "49",
     "50"
   ]
 }
