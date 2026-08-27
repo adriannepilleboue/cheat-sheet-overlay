@@ -47,13 +47,13 @@ export const CSOShortcutDialog = GObject.registerClass(
                 styleClass: 'popup-menu-content cso-shortcut-dialog',
                 destroyOnClose: true, // Automatically cleans up memory when closed
             });
-            
+
             // On GNOME 46/48, the dialog trigger a new focus event with appId = ''.
             // In all case, it's better to ensure that we save the shortcuts in the
             // correct application
             this._appId = appId;
 
-            const isInEditMode = shortcutDescription && shortcutKeysStr;
+            const isInEditMode = shortcutDescription || shortcutKeysStr;
 
             const vbox = new St.BoxLayout({
                 ...compatibleVertical(),
@@ -114,16 +114,36 @@ export const CSOShortcutDialog = GObject.registerClass(
                 deleteButton.add_style_class_name('cso-shortcut-dialog-delete-button');
             }
 
-            this.addButton({
+            const saveButton = this.addButton({
                 label: _('Save'),
                 action: () => {
                     const description = descriptionEntry.get_text().trim();
                     const shortcut = shortcutEntry.get_text().trim();
 
+                    if (!description || !shortcut) {
+                        return;
+                    }
+
                     this.emit('form-filled', this._appId, description, shortcut);
                     this.close();
                 },
             });
+
+            const updateSaveButtonState = () => {
+                const description = descriptionEntry.get_text().trim();
+                const shortcut = shortcutEntry.get_text().trim();
+                const isValid = description.length > 0 && shortcut.length > 0;
+
+                saveButton.reactive = isValid;
+                saveButton.can_focus = isValid;
+                saveButton.sensitive = isValid;
+            };
+
+            // No need to disconnect here, since both part will be destructed together
+            descriptionEntry.connect('notify::text', updateSaveButtonState);
+            shortcutEntry.connect('notify::text', updateSaveButtonState);
+
+            updateSaveButtonState();
         }
     }
 );
