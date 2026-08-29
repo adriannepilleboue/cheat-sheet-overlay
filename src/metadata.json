@@ -1,7 +1,7 @@
 {
-  "version-name": "50.0.4",
+  "version-name": "50.0.5",
   "name": "Cheat Sheet Overlay",
-  "description": "Display a cheat sheet overlay with a per-application list of shortcuts",
+  "description": "Toggle a cheat sheet overlay with Super + F2 or by clicking on the indicator. The overlay shows system-wide shortcuts on the left and shortcuts for the focused application on the right. There is no default pinned shortcuts, it's entirely up to the user to add the ones they need, directly from the overlay.",
   "uuid": "cheat.sheet.overlay@apilleboue.me",
   "settings-schema": "org.gnome.shell.extensions.cheatsheetoverlay",
   "gettext-domain": "cheat.sheet.overlay@apilleboue.me",
@@ -11,6 +11,7 @@
     "47",
     "48",
     "49",
-    "50"
+    "50",
+    "51"
   ]
 }
