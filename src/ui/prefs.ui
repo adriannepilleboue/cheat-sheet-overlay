@@ -54,6 +54,26 @@
             </child>
           </object>
         </child>
+
+        <child>
+          <object class="AdwComboRow" id="monitor-row">
+            <property name="title" translatable="yes">Monitor</property>
+            <property name="subtitle" translatable="yes">Choose which monitor the overlay should appear on.</property>
+            <property name="tooltip-text" translatable="yes">Choose which monitor the overlay should appear on.</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item translatable="yes">Focused monitor</item>
+                  <item translatable="yes">Primary monitor</item>
+                  <item translatable="yes">Monitor 1</item>
+                  <item translatable="yes">Monitor 2</item>
+                  <item translatable="yes">Monitor 3</item>
+                  <item translatable="yes">Monitor 4</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
       </object>
     </child>
 

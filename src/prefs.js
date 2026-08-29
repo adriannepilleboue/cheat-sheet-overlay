@@ -22,7 +22,7 @@ import Adw from 'gi://Adw';
 import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 export default class CheatSheetOverlayPreferences extends ExtensionPreferences {
-    _augmentToggleOverlayRow(settings, page, row) {
+    _fillToggleOverlayRow(settings, page, row) {
         // Add a Gtk label that displays the shortcut.
         const toggleOverlayRowLabel = new Gtk.ShortcutLabel({
             disabled_text: _("Select a shortcut"),
@@ -87,6 +87,33 @@ export default class CheatSheetOverlayPreferences extends ExtensionPreferences {
         });
     }
 
+    _fillMonitorRow(settings, row) {
+        const monitorTargetOptions = [
+            'focused',
+            'primary',
+            'monitor0',
+            'monitor1',
+            'monitor2',
+            'monitor3'
+        ];
+        
+        const updateMonitorTargetRow = () => {
+            const currentValue = settings.get_string('monitor');
+            const selectedIndex = monitorTargetOptions.indexOf(currentValue);
+            row.set_selected(selectedIndex >= 0 ? selectedIndex : 0);
+        };
+
+        row.connect('notify::selected', () => {
+            const selectedIndex = row.get_selected();
+            if (selectedIndex >= 0 && selectedIndex < monitorTargetOptions.length) {
+                settings.set_string('monitor', monitorTargetOptions[selectedIndex]);
+            }
+        });
+
+        settings.connect('changed::monitor', updateMonitorTargetRow);
+        updateMonitorTargetRow();
+    }
+
     fillPreferencesWindow(window) {
         const settings = this.getSettings();
         const builder = new Gtk.Builder();
@@ -108,9 +135,12 @@ export default class CheatSheetOverlayPreferences extends ExtensionPreferences {
         const showApplicationSheetsSwitch = builder.get_object('show-application-sheets-switch');
         showApplicationSheetsSwitch.set_active(settings.get_boolean('show-application-sheets'));
         settings.bind('show-application-sheets', showApplicationSheetsSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+        
+        // General Group / Monitor
+        this._fillMonitorRow(settings, builder.get_object('monitor-row'));
 
         // Shortcut Group / Toggle Overlay
-        this._augmentToggleOverlayRow(settings, page, builder.get_object('toggle-overlay-row'));
+        this._fillToggleOverlayRow(settings, page, builder.get_object('toggle-overlay-row'));
 
         window.add(page);
     }

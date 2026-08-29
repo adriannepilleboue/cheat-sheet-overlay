@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-24 23:14+0200\n"
-"PO-Revision-Date: 2026-08-24 23:24+0200\n"
+"POT-Creation-Date: 2026-08-29 14:50+0200\n"
+"PO-Revision-Date: 2026-08-29 14:58+0200\n"
 "Last-Translator: Adrianne <adrianne.pilleboue@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Gtranslator 50.0\n"
 
-#: src/extension.js:73
+#: src/extension.js:74
 msgid "System"
 msgstr "Système"
 
@@ -32,35 +32,35 @@ msgstr "Choisir un raccourci"
 msgid "Define new shortcut"
 msgstr "Définir un nouveau raccourci"
 
-#: src/components/overlay-widget.js:77 src/ui/prefs.ui:62
+#: src/components/overlay-widget.js:79 src/ui/prefs.ui:82
 msgid "Shortcuts"
 msgstr "Raccourcis"
 
-#: src/components/shortcut-dialog.js:54
+#: src/components/shortcut-dialog.js:66
 msgid "Edit pinned shortcut"
 msgstr "Éditer le raccourci épinglé"
 
-#: src/components/shortcut-dialog.js:54
+#: src/components/shortcut-dialog.js:66
 msgid "Pin new shortcut"
 msgstr "Épingler un nouveau raccourci"
 
-#: src/components/shortcut-dialog.js:62
+#: src/components/shortcut-dialog.js:74
 msgid "Description"
 msgstr "Description"
 
-#: src/components/shortcut-dialog.js:75
+#: src/components/shortcut-dialog.js:87
 msgid "Shortcut (keys separated by spaces)"
 msgstr "Raccourci (touches séparées par des espaces) "
 
-#: src/components/shortcut-dialog.js:88
+#: src/components/shortcut-dialog.js:100
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/components/shortcut-dialog.js:96
+#: src/components/shortcut-dialog.js:108
 msgid "Delete"
 msgstr "Supprimer"
 
-#: src/components/shortcut-dialog.js:106
+#: src/components/shortcut-dialog.js:118
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -96,10 +96,42 @@ msgstr "Afficher les pense-bêtes d'application"
 msgid "Show application sheets in the overlay"
 msgstr "Afficher les pense-bêtes d'application dans la superposition"
 
+#: src/ui/prefs.ui:60
+msgid "Monitor"
+msgstr "Moniteur"
+
+#: src/ui/prefs.ui:61 src/ui/prefs.ui:62
+msgid "Choose which monitor the overlay should appear on."
+msgstr "Dans quel moniteur la superposition doit apparaître"
+
 #: src/ui/prefs.ui:66
+msgid "Focused monitor"
+msgstr "Moniteur avec le focus"
+
+#: src/ui/prefs.ui:67
+msgid "Primary monitor"
+msgstr "Moniteur primaire"
+
+#: src/ui/prefs.ui:68
+msgid "Monitor 1"
+msgstr "Moniteur 1"
+
+#: src/ui/prefs.ui:69
+msgid "Monitor 2"
+msgstr "Moniteur 2"
+
+#: src/ui/prefs.ui:70
+msgid "Monitor 3"
+msgstr "Moniteur 3"
+
+#: src/ui/prefs.ui:71
+msgid "Monitor 4"
+msgstr "Moniteur 4"
+
+#: src/ui/prefs.ui:86
 msgid "Toggle overlay"
 msgstr "Activer/Désactiver la superposition"
 
-#: src/ui/prefs.ui:67 src/ui/prefs.ui:68
+#: src/ui/prefs.ui:87 src/ui/prefs.ui:88
 msgid "Shortcut to toggle the cheat sheet overlay"
 msgstr "Raccourci pour activer/désactiver la superposition des pense-bêtes"

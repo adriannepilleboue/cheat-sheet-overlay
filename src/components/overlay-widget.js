@@ -24,6 +24,7 @@ import { CSOShortcutsSheetWidget } from './shortcuts-sheet-widget.js';
 import { CSOShortcutDialog } from './shortcut-dialog.js';
 import { CSOIconButtonWidget } from './icon-button-widget.js';
 import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { AlignToMonitorConstraint } from './monitor.js';
 import { compatibleVertical } from '../compatibility.js';
 
 export const CSOOverlayWidget = GObject.registerClass(
@@ -106,16 +107,10 @@ export const CSOOverlayWidget = GObject.registerClass(
             this._appName = appName;
             this._horizontalAlignement = horizontalAlignement;
 
-            this.add_constraint(new Clutter.AlignConstraint({
-                source: Main.layoutManager.uiGroup,
-                align_axis: Clutter.AlignAxis.X_AXIS,
-                factor: this._horizontalAlignement
-            }));
-
-            this.add_constraint(new Clutter.AlignConstraint({
-                source: Main.layoutManager.uiGroup,
-                align_axis: Clutter.AlignAxis.Y_AXIS,
-                factor: 1.0 // 0.0 shifts it completely to the top
+            this.add_constraint(new AlignToMonitorConstraint({
+                settings: settings,
+                horizontal_factor: this._horizontalAlignement,
+                vertical_factor: 1.0,
             }));
 
             // Title

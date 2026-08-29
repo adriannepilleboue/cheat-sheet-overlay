@@ -16,6 +16,11 @@
       <summary>Show application sheets</summary>
       <description>Show application sheets in the overlay.</description>
     </key>
+    <key type="s" name="monitor">
+      <default><![CDATA['focused']]></default>
+      <summary>Monitor</summary>
+      <description>Choose which monitor the overlay should appear on.</description>
+    </key>
     <key type="as" name="toggle-overlay">
       <default><![CDATA[['<Super>F2']]]></default>
       <summary>Toggle overlay</summary>
